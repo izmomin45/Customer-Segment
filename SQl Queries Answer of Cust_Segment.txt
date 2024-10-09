@@ -1,0 +1,215 @@
+
+CUSTOMER SEGMENT ANALYSIS (ANSWER)
+
+--1
+select * from Customers
+
+--2 
+select * from Transactions 
+where Amount_Spent >1000
+
+--3
+select * from Customers
+where Join_Date < '2023-1-1'
+
+--4
+select count(membership_Status) as CountOfStatus , membership_Status
+from Customers 
+group by Membership_Status
+
+--5
+select * from Transactions 
+where Discount_Applied >10
+
+--6
+select COUNT(distinct Product_Category) as [ Count of product ] 
+from Transactions
+
+--7 
+select c.Name , sum(t.Amount_Spent) as [Total Spend]
+from Customers c inner join Transactions t
+on c.Customer_ID=t.Customer_ID
+group by c.Name
+order by [Total Spend] desc
+
+--8
+select * from Customers
+where Location ='Mumbai'
+
+--9 
+select * from Transactions
+where Product_Category='Electronics'
+
+--10
+select COUNT(transaction_id) As [Count of Transaction ] , Transaction_Status
+from Transactions
+--where Transaction_Status='Complete'
+group by Transaction_Status
+
+--10
+SELECT COUNT(Transaction_ID) AS [Count of Transaction], Transaction_Status
+FROM Transactions
+WHERE Transaction_Status LIKE 'Complete%'
+GROUP BY Transaction_Status;
+
+
+--11
+select avg(amount_spent)[Avg Amount Spend Per Order]
+from Transactions
+
+--12  
+select TOP 5 Customer_id ,sum(Amount_Spent) [Total Spent]
+from Transactions
+group by Customer_ID
+order by [Total Spent] desc 
+
+
+--13
+SELECT Customer_ID, SUM(AMOUNT_SPENT)
+FROM Transactions
+WHERE Amount_Spent>1000
+GROUP BY Customer_ID
+
+
+--14
+select top 1 COUNT(payment_method) MostCommnMethod , Payment_Method
+from Transactions
+group by Payment_Method 
+order by MostCommnMethod desc
+
+--15
+select SUM(Discount_Applied) as [Total Discount] 
+from Transactions
+
+
+--16
+select COUNT(transaction_id)[NO OF TRANSACTION], store_location 
+from Transactions
+where Amount_Spent>1000
+group by Store_Location
+
+--17
+select * from Transactions
+where Product_Category in ('Fashion', 'Groceries')
+
+--18
+select t.customer_id , c.Customer_id , t.Payment_Method
+from Transactions t left join Customers c
+on t.Customer_ID=c.Customer_ID
+-- You Will Find Null Value in Payment_Method columns Which Satisfy Our Question
+
+--19
+select c.Location , sum(t.Amount_Spent) As [Total Amount]
+from Customers c inner Join Transactions t
+on C.Customer_ID=t.Customer_ID
+where c.Location='Delhi'
+group by c.Location
+
+--20
+-- Same as Number 12
+
+
+--21
+select top 1 Product_Name , COUNT(Transaction_id)[Total Count]
+from Transactions
+group by Product_Name
+order by [Total Count] desc
+
+
+--22
+select avg(Age)[Avg Age Of Cust] 
+from Customers
+where Membership_Status='Gold'
+
+
+--23
+select top 3 Store_Location , sum(Amount_spent)[Total Amount]
+from Transactions
+group by Store_Location
+order by [Total Amount] desc
+
+--24
+select * from Transactions
+where Purchase_Date >=DATEADD(MONTH,-1,Getdate())
+
+--25
+select  Product_Category , Count(Transaction_ID)[Count of Transaction]
+from Transactions
+group by Product_Category
+order by [Count of Transaction] desc
+
+
+--26
+select top 10 Transaction_ID , count(Transaction_Status) Status 
+from Transactions
+where Transaction_Status='Failed'
+group by Transaction_ID
+order by Status desc
+
+--27
+select top 10 Payment_Method , Count(Transaction_ID)[Total Transaction] , Store_Location
+from Transactions
+Group by Payment_Method , Store_Location
+order by [Total Transaction] desc
+
+--28
+select * from Customers
+where Join_Date > '2022-1-1'
+
+--29
+select Customer_ID ,count(Distinct Payment_Method )[Count]
+from Transactions
+group by Customer_ID
+having COUNT(distinct Payment_Method)>1
+
+--30
+select Avg(Discount_Applied)[Avg Discount In %] , Product_category
+from Transactions
+where Product_Category='Clothing'
+group by Product_Category
+
+
+--31
+select Store_Location , Sum(Amount_Spent) As [Total Amount]
+from Transactions
+where Purchase_date >= DATEADD(month,-6,getdate())
+group by Store_Location
+
+
+--32
+select top 5 Customer_id , COUNT(Transaction_id)[Count] , SUM(Amount_Spent)[Total Amount]
+from Transactions
+group by Customer_ID
+order by [Count] desc
+
+--33
+select top 10 Product_Category , Sum(Amount_Spent)[Total Amount] , AVG(Discount_Applied)[Total Discount]
+from Transactions
+where Purchase_Date > DATEADD(Quarter,-1, GETDATE())
+group by Product_Category
+order by [Total Amount] desc
+
+--34
+select c.customer_id , t.customer_id , Product_Name
+from Customers c left join Transactions t
+on c.Customer_ID=t.Customer_ID
+where Purchase_Date >=DATEADD(Year ,-1,GETDATE())
+  --if we find null value in product name means this cust not used since on year 
+
+--35
+select Customer_Id 
+from
+Transactions
+Group by Customer_ID
+having	SUM(Amount_Spent)>20000 and Avg(Discount_Applied)<=0 
+
+--36
+select MONTH(Purchase_Date) AS Month, 
+       AVG(Amount_Spent) AS Average_Transaction_Amount
+from Transactions
+where Purchase_Date >= DATEADD(YEAR, -1, GETDATE())
+group by MONTH(Purchase_Date)
+order by Month;
+
+
+
